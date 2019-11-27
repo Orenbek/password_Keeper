@@ -1,7 +1,13 @@
 //app.js
+import { promisifyAll, promisify } from 'miniprogram-api-promise';
+const wxp = {}
+// promisify all wx's api
+promisifyAll(wx, wxp)
+
+// promisify single api
+promisify(wx.getSystemInfo)().then(console.log('promisify single api'));
 App({
   onLaunch: function () {
-
     if (!wx.cloud) {
       console.error('请使用 2.2.3 或以上的基础库以使用云能力')
     } else {
@@ -18,10 +24,8 @@ App({
     this.globalData = {}
   },
   onShow: function () {
-    console.log('App Show')
   },
   onHide: function () {
-    console.log('App Hide')
   },
   globalData: {
     hasLogin: false

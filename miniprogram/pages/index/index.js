@@ -10,11 +10,8 @@ Page({
     requestResult: ''
   },
 
-  onLoad: function() {
+  onLoad: function () {
     if (!wx.cloud) {
-      wx.redirectTo({
-        url: '../chooseLib/chooseLib',
-      })
       return
     }
 
@@ -33,10 +30,27 @@ Page({
           })
         }
       }
-    })
+    });
+
+    this.setData({
+      icon: '',
+      slideButtons: [{
+        text: '普通',
+        src: '/weui/cell/icon_love.svg', // icon的路径
+      }, {
+        text: '普通',
+        extClass: 'test',
+        src: '/weui/cell/icon_star.svg', // icon的路径
+      }, {
+        type: 'warn',
+        text: '警示',
+        extClass: 'test',
+        src: '/weui/cell/icon_del.svg', // icon的路径
+      }],
+    });
   },
 
-  onGetUserInfo: function(e) {
+  onGetUserInfo: function (e) {
     if (!this.data.logged && e.detail.userInfo) {
       this.setData({
         logged: true,
@@ -46,7 +60,7 @@ Page({
     }
   },
 
-  onGetOpenid: function() {
+  onGetOpenid: function () {
     // 调用云函数
     wx.cloud.callFunction({
       name: 'login',
@@ -81,7 +95,7 @@ Page({
         })
 
         const filePath = res.tempFilePaths[0]
-        
+
         // 上传图片
         const cloudPath = 'my-image' + filePath.match(/\.[^.]+?$/)[0]
         wx.cloud.uploadFile({
@@ -93,7 +107,7 @@ Page({
             app.globalData.fileID = res.fileID
             app.globalData.cloudPath = cloudPath
             app.globalData.imagePath = filePath
-            
+
             wx.navigateTo({
               url: '../storageConsole/storageConsole'
             })
@@ -116,5 +130,9 @@ Page({
       }
     })
   },
+
+  slideButtonTap: function(e) {
+    console.log(e);
+  }
 
 })
