@@ -1,1 +1,4 @@
 /**index.wxss**/
+.primary {
+    color: #576B95;
+}

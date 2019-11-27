@@ -1,4 +1,12 @@
 //index.js
+import {
+  promisifyAll,
+  promisify
+} from 'miniprogram-api-promise';
+const wxp = {}
+// promisify all wx's api
+promisifyAll(wx, wxp)
+
 const app = getApp()
 
 Page({
@@ -7,10 +15,36 @@ Page({
     userInfo: {},
     logged: false,
     takeSession: false,
-    requestResult: ''
+    requestResult: '',
+    showTopTips: false,
+    slideButtons: [{
+      text: '编辑',
+    }, {
+      type: 'warn',
+      text: '删除',
+    }],
+    pwList: [{
+      id: 0,
+      main: '第一个',
+      userName: 'google',
+      passWord: '123',
+      showDetail: false,
+    }, {
+      id: 1,
+      main: '第一个',
+      userName: 'baidu',
+      passWord: '234',
+      showDetail: false,
+    }, {
+      id: 2,
+      main: '第一个',
+      userName: 'bing',
+      passWord: '345',
+      showDetail: false,
+    }, ]
   },
 
-  onLoad: function () {
+  onLoad() {
     if (!wx.cloud) {
       return
     }
@@ -31,26 +65,9 @@ Page({
         }
       }
     });
-
-    this.setData({
-      icon: '',
-      slideButtons: [{
-        text: '普通',
-        src: '/weui/cell/icon_love.svg', // icon的路径
-      }, {
-        text: '普通',
-        extClass: 'test',
-        src: '/weui/cell/icon_star.svg', // icon的路径
-      }, {
-        type: 'warn',
-        text: '警示',
-        extClass: 'test',
-        src: '/weui/cell/icon_del.svg', // icon的路径
-      }],
-    });
   },
 
-  onGetUserInfo: function (e) {
+  onGetUserInfo(e) {
     if (!this.data.logged && e.detail.userInfo) {
       this.setData({
         logged: true,
@@ -60,7 +77,7 @@ Page({
     }
   },
 
-  onGetOpenid: function () {
+  onGetOpenid() {
     // 调用云函数
     wx.cloud.callFunction({
       name: 'login',
@@ -82,7 +99,7 @@ Page({
   },
 
   // 上传图片
-  doUpload: function () {
+  doUpload() {
     // 选择图片
     wx.chooseImage({
       count: 1,
@@ -131,8 +148,23 @@ Page({
     })
   },
 
-  slideButtonTap: function(e) {
+  slideButtonTap(e) {
     console.log(e);
-  }
+  },
+
+  onclick() {
+    console.log('onclick');
+    wxp.setClipboardData({
+      data: 'hhhhhhhhhhh'
+    }).then(res => {
+      console.log('1',res)
+      return wxp.getClipboardData()
+    }).then(res => {
+      console.log('2',res)
+      wx.showToast({
+        title: '复制成功'
+      })
+    })
+  },
 
 })

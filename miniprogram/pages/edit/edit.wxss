@@ -1,0 +1,4 @@
+/* pages/edit/edit.wxss */
+.primary {
+  color: #576B95;
+}

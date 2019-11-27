@@ -23,7 +23,7 @@
 	},
 	"appid": "wx3b6248c24022c717",
 	"projectname": "passWordKeeper",
-	"libVersion": "2.9.3",
+	"libVersion": "2.8.3",
 	"simulatorType": "wechat",
 	"simulatorPluginLibVersion": {},
 	"condition": {

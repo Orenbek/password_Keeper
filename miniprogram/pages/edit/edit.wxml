@@ -1,0 +1,32 @@
+<view>
+  <mp-toptips msg="{{errors}}" type="error" show="{{errors}}"></mp-toptips>
+  <view class="page" xmlns:wx="http://www.w3.org/1999/xhtml">
+    <view class="page__bd">
+      <mp-form id="form" rules="{{rules}}" models="{{formData}}">
+        <mp-cells title="编辑密码" footer="保存后密码会加密上传到数据库中保存">
+          <mp-cell prop="main" title="描述" show-error>
+            <input bindinput="formInputChange" data-field="main" class="weui-input" placeholder="请输入密码描述" />
+          </mp-cell>
+          <mp-cell prop="username" title="用户名" show-error>
+            <input bindinput="formInputChange" data-field="username" class="weui-input" placeholder="请输入用户名" />
+          </mp-cell>
+          <mp-cell prop="password" title="密码" show-error>
+            <input bindinput="formInputChange" data-field="password" class="weui-input" placeholder="请输入密码" />
+          </mp-cell>
+          <mp-cell prop="email" title="绑定的邮箱" show-error>
+            <input bindinput="formInputChange" data-field="email" class="weui-input" placeholder="请输入邮箱" />
+          </mp-cell>
+          <mp-cell prop="desc" show-error>
+            <view class="weui-cell__bd">
+              <textarea bindinput="formInputChange" data-field="desc" class="weui-textarea" placeholder="请输入备注" style="height: 3.3em" />
+              <view class="weui-textarea-counter">{{descLength}}/200</view>
+            </view>
+          </mp-cell>
+        </mp-cells>
+      </mp-form>
+      <view class="weui-btn-area">
+        <button class="weui-btn" type="primary" bindtap="submitForm">确定</button>
+      </view>
+    </view>
+  </view>
+</view>

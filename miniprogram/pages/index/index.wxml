@@ -1,22 +1,19 @@
 <!-- index.wxml -->
 <view class="page">
-    <view class="page__hd">
-        <view class="page__title">Slideview</view>
-        <view class="page__desc">左滑操作</view>
-    </view>
-    <view class="page__bd">
-      <view class="weui-cells">
-          <mp-slideview buttons="{{slideButtons}}" bindbuttontap="slideButtonTap" data-dem="222">
-              <mp-cell value="左滑可以删除" footer="说明文字"></mp-cell>
-          </mp-slideview>
-      </view>
-
-      <view class="weui-slidecells">
-        <mp-slideview buttons="{{slideButtons}}" icon="{{true}}" bindbuttontap="slideButtonTap">
-          <view class="weui-slidecell">
-            左滑可以删除（图标Button）
-          </view>
+  <view class="page__hd">
+    <view class="page__title">Slideview</view>
+    <view class="page__desc">左滑操作</view>
+  </view>
+  <view class="page__bd">
+    <view class="weui-cells">
+      <block wx:for="{{pwList}}">
+        <mp-slideview buttons="{{slideButtons}}" bindbuttontap="slideButtonTap" disable="{{item.showDetail}}" wx:key="{{item.id}}" data-id="{{item.id}}">
+          <mp-cell>
+            <view>{{item.main}}</view>
+            <view slot="footer" class="primary" bind:tap="onclick">复制</view>
+          </mp-cell>
         </mp-slideview>
-      </view>
+      </block>
     </view>
+  </view>
 </view>
