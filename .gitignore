@@ -1,1 +1,3 @@
 weui-wxss
+**/node_modules
+**/miniprogram_npm
