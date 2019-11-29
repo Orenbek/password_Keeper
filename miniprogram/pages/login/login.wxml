@@ -1,0 +1,37 @@
+<view class="weui-form">
+  <mp-toptips msg="{{errors}}" type="error" show="{{errors}}"></mp-toptips>
+  <view wx:if="{{newUser}}" class="weui-form__text-area">
+    <view class="weui-form__title">注册页面</view>
+    <view class="weui-form__desc"><text class="sm">请建立</text> Password Guard <text class="sm">主密码</text></view>
+  </view>
+  <view wx:else class="weui-form__text-area">
+    <view class="weui-form__title">输入 Password Guard 主密码</view>
+  </view>
+  <view class="weui-form__control-area">
+    <view class="weui-cells__group weui-cells__group_form">
+        <view class="weui-cells__title">输入密码</view>
+        <view class="weui-cells weui-cells_form">
+          <view class="weui-cell">
+            <view class="weui-cell__hd"><label class="weui-label sm">密码</label></view>
+            <view class="weui-cell__bd">
+                <input class="weui-input sm" bindinput="bindInput" value="{{passWord}}" data-field="passWord" auto-focus maxlength="10" type="number" password pattern="[0-9]*" placeholder="......"/>
+            </view>
+          </view>
+          <view wx:if="{{newUser}}" class="weui-cell">
+            <view class="weui-cell__hd"><label class="weui-label sm">再次输入密码</label></view>
+            <view class="weui-cell__bd">
+                <input class="weui-input sm" bindinput="bindInput" value="{{passWord2}}" data-field="passWord2" type="number" maxlength="10" password pattern="[0-9]*" placeholder="......"/>
+            </view>
+          </view>
+        </view>
+    </view>
+  </view>
+  <view wx:if="{{newUser}}" class="weui-form__tips-area">
+    <label>
+      <span class="lil_desc">主密码只能设置一次，请妥善保管您的主密码</span>
+    </label>
+  </view>
+  <view class="weui-form__opr-area">
+    <button type="primary" bindtap="submit">确定</button>
+  </view>
+</view>

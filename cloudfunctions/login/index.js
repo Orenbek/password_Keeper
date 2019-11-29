@@ -34,22 +34,36 @@ exports.main = async (event, context) => {
     }
   }
   let res;
-  if (event.MainPassWord) {
-    if(event.newUser){
+  if (event.mainPassWord) {
+    if (event.newUser) {
       res = await PWs.add({
-        data: event.MainPassWord
+        data: {
+          _openid: event.userInfo.openId,
+          mainPassWord: event.mainPassWord
+        }
       });
-      res.ok = true;
-      res.errCode = 0
-    }
-    let result = await PWs.doc(event._id).get();
-    if (result.MainPassWord === event.MainPassWord) {
       res.ok = true;
       res.errCode = 0;
     } else {
-      res.ok = false;
-      res.errCode = 5000;
-      res.errMsg = '主密码错误！'
+      let result = await PWs.doc(event._id).get();
+      if (result.data.mainPassWord === event.mainPassWord) {
+        res = {
+          ok: true,
+          errCode: 0,
+        }
+      } else {
+        res = {
+          ok: false,
+          errCode: 5000,
+          errMsg: '主密码错误！'
+        }
+      }
+    }
+  } else {
+    res = {
+      ok: false,
+      errCode: 5000,
+      errMsg: '没有找到主密码！'
     }
   }
   return res;
@@ -58,4 +72,3 @@ exports.main = async (event, context) => {
 function validate(openId) {
   return openId && openId === validUserOpenId ? true : false;
 }
-

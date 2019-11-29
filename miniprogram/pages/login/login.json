@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "mp-form-page": "/weui/form-page/form-page",
+    "mp-toptips": "/weui/toptips/toptips"
+  }
+}

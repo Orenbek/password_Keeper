@@ -17,17 +17,29 @@ App({
         //   此处请填入环境 ID, 环境 ID 可打开云控制台查看
         //   如不填则使用默认环境（第一个创建的环境）
         env: 'test-env-57b34f',
-        traceUser: true,
+        traceUser: false,
       })
+      this.globalData.initPromise = wx.cloud.callFunction({name: 'init'});
+      this.globalData.initPromise.then(res => {
+        if(!res.result.errCode) {
+          this.globalData.newUser = res.result._id === 'empty' ? true : false;
+          this.globalData._id = res.result._id;
+        } else {
+          wx.showToast({
+            title: `程序初始化出错，errMsg: ${res.result.errMsg}`,
+            duration: 2000
+          })
+        }
+      })
+      .catch(err=>{
+        wx.showToast({
+          title: '程序初始化出错，请查看网络状况！',
+          duration: 2000
+        })
+      });
     }
-
-    this.globalData = {}
-  },
-  onShow: function () {
-  },
-  onHide: function () {
   },
   globalData: {
-    hasLogin: false
+    newUser: true,
   }
 })

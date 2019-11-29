@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/login/login",
     "pages/slider/slider",
     "pages/index/index",
     "pages/edit/edit"
@@ -8,7 +9,7 @@
     "backgroundColor": "#EDEDED",
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#EDEDED",
-    "navigationBarTitleText": "Pass Word Keeper",
+    "navigationBarTitleText": "Password Guard",
     "navigationBarTextStyle": "black"
   },
   "networkTimeout": {

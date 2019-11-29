@@ -121,10 +121,10 @@ async function del(data) {
   if (data.id && data._id) {
     try {
       let result = await PWs.doc(data._id).get();
-      if (result.passWords.length > 0) {
-        result.passWords = result.passWords.filter(item => item.id !== data.id);
+      if (result.data.passWords.length > 0) {
+        result.data.passWords = result.data.passWords.filter(item => item.id !== data.id);
         res = await PWs.doc(data._id).set({
-          data: result
+          data: result.data
         })
         res.ok = true;
       }
@@ -189,9 +189,9 @@ async function search(data) {
   if (data._id) {
     try {
       res = await PWs.doc(data._id).get();
-      resArr = [];
+      let resArr = [];
       if (data.keyWord) {
-        const passWords = res.passWords;
+        const passWords = res.data.passWords;
         const reg =  new RegExp(data.keyWord);
         for (let item of passWords.values()) {
           if (reg.test(item)) {
@@ -199,9 +199,11 @@ async function search(data) {
           }
         }
       }
-      res = data.keyWord ? resArr : res;
-      res.ok = true;
-      res.errCode = 0;
+      res = {
+        data: data.keyWord ? resArr : res.data,
+        ok: true,
+        errCode: 0
+      }
     } catch (e) {
       console.error('search 出现错误！', e)
       res = {

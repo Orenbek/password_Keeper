@@ -1,0 +1,6 @@
+page{height:100%;}
+
+.lil_desc {
+  color: rgba(0,0,0,.5);
+  font-size: 14px;
+}

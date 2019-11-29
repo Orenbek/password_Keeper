@@ -1,4 +1,3 @@
-//index.js
 import {
   promisifyAll,
   promisify
@@ -7,164 +6,131 @@ const wxp = {}
 // promisify all wx's api
 promisifyAll(wx, wxp)
 
-const app = getApp()
-
 Page({
   data: {
-    avatarUrl: './user-unlogin.png',
-    userInfo: {},
-    logged: false,
-    takeSession: false,
-    requestResult: '',
-    showTopTips: false,
-    slideButtons: [{
-      text: '编辑',
-    }, {
-      type: 'warn',
-      text: '删除',
-    }],
-    pwList: [{
-      id: 0,
-      main: '第一个',
-      userName: 'google',
-      passWord: '123',
-      showDetail: false,
-    }, {
-      id: 1,
-      main: '第二个',
-      userName: 'baidu',
-      passWord: '234',
-      showDetail: false,
-    }, {
-      id: 2,
-      main: '第三个',
-      userName: 'bing',
-      passWord: '345',
-      showDetail: false,
-    }, ]
+      list: [
+          {
+              id: 'form',
+              main: '表单',
+              open: false,
+              pages: {main: '第一个', passWord: '123', email: '邮箱账号', desc: '备注详情'}
+          },
+          {
+              id: 'widget',
+              main: '基础组件',
+              open: false,
+              pages: {main: '第一个', userName: '第二个', passWord: '123', email: '邮箱账号', desc: '备注详情'}
+          },
+          {
+              id: 'feedback',
+              main: '操作反馈',
+              open: false,
+              pages: {main: '第一个', passWord: '123', email: '邮箱账号', desc: '备注详情'}
+          },
+          {
+              id: 'nav',
+              main: '导航相关',
+              open: false,
+              pages: {main: '第一个', userName: '第二个', passWord: '123', email: '邮箱账号', desc: '备注详情'}
+          },
+          {
+              id: 'search',
+              main: '搜索相关',
+              open: false,
+              pages: {main: '第一个', userName: '第二个', passWord: '123', email: '邮箱账号', desc: '备注详情'}
+          },
+          {
+              id: 'search',
+              main: '搜索相关',
+              open: false,
+              pages: {main: '第一个', userName: '第二个', passWord: '123', email: '邮箱账号', desc: '备注详情'}
+          },
+          {
+              id: 'search',
+              main: '搜索相关',
+              open: false,
+              pages: {main: '第一个', userName: '第二个', passWord: '123', email: '邮箱账号', desc: '备注详情'}
+          }
+      ],
+      slideButtons: [{
+        text: '编辑',
+      }, {
+        type: 'warn',
+        text: '删除',
+      }],
+      hasMore: true,
+      loadingList: false,
   },
-
-  onLoad() {
-    if (!wx.cloud) {
-      return
-    }
-
-    // 获取用户信息
-    wx.getSetting({
-      success: res => {
-        if (res.authSetting['scope.userInfo']) {
-          // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框
-          wx.getUserInfo({
-            success: res => {
-              this.setData({
-                avatarUrl: res.userInfo.avatarUrl,
-                userInfo: res.userInfo
-              })
-            }
-          })
-        }
+  kindToggle: function (e) {
+      const id = e.currentTarget.dataset.id
+      const list = this.data.list;
+      for (let i = 0, len = list.length; i < len; ++i) {
+          if (list[i].id == id) {
+              list[i].open = !list[i].open
+          } else {
+              list[i].open = false
+          }
       }
-    });
+      this.setData({
+          list: list
+      });
+      wx.cloud.callFunction({
+        // 云函数名称
+        name: 'init',
+        // 传给云函数的参数
+        data: {
+          type: 'change',
+          data: {
+            openId: 'ozhLN4vRc529URuy7fZ_N0lT239Y',
+            id: 'oren'
+          }
+        },
+      })
+      .then(res => {
+        console.log(res) // 3
+      })
+      .catch(console.error)
   },
 
-  onGetUserInfo(e) {
-    if (!this.data.logged && e.detail.userInfo) {
-      this.setData({
-        logged: true,
-        avatarUrl: e.detail.userInfo.avatarUrl,
-        userInfo: e.detail.userInfo
+  onCopy(e) {
+    if (e.currentTarget.dataset.password) {
+      wxp.setClipboardData({
+        data: e.currentTarget.dataset.password
+        // 注意 这里passWord会变成 全小写password
+      }).then(() => {
+        wx.showToast({
+          title: '复制成功'
+        })
+      });
+    } else {
+      wx.showToast({
+        title: '复制失败，密码不存在',
+        icon: 'none',
+        duration: 2000
       })
     }
-  },
-
-  onGetOpenid() {
-    // 调用云函数
-    wx.cloud.callFunction({
-      name: 'login',
-      data: {},
-      success: res => {
-        console.log('[云函数] [login] user openid: ', res.result.openid)
-        app.globalData.openid = res.result.openid
-        wx.navigateTo({
-          url: '../userConsole/userConsole',
-        })
-      },
-      fail: err => {
-        console.error('[云函数] [login] 调用失败', err)
-        wx.navigateTo({
-          url: '../deployFunctions/deployFunctions',
-        })
-      }
-    })
-  },
-
-  // 上传图片
-  doUpload() {
-    // 选择图片
-    wx.chooseImage({
-      count: 1,
-      sizeType: ['compressed'],
-      sourceType: ['album', 'camera'],
-      success: function (res) {
-
-        wx.showLoading({
-          title: '上传中',
-        })
-
-        const filePath = res.tempFilePaths[0]
-
-        // 上传图片
-        const cloudPath = 'my-image' + filePath.match(/\.[^.]+?$/)[0]
-        wx.cloud.uploadFile({
-          cloudPath,
-          filePath,
-          success: res => {
-            console.log('[上传文件] 成功：', res)
-
-            app.globalData.fileID = res.fileID
-            app.globalData.cloudPath = cloudPath
-            app.globalData.imagePath = filePath
-
-            wx.navigateTo({
-              url: '../storageConsole/storageConsole'
-            })
-          },
-          fail: e => {
-            console.error('[上传文件] 失败：', e)
-            wx.showToast({
-              icon: 'none',
-              title: '上传失败',
-            })
-          },
-          complete: () => {
-            wx.hideLoading()
-          }
-        })
-
-      },
-      fail: e => {
-        console.error(e)
-      }
-    })
   },
 
   slideButtonTap(e) {
-    console.log(e);
+    const id = e.currentTarget.dataset.id;
+    const index = e.detail.index;
+    if (index === 0) {
+      wxp.navigateTo({url: `../edit/edit?id=${id}`});
+    } else if (index === 1) {
+      this.deleteRecord(id);
+    }
   },
 
-  onclick() {
-    console.log('onclick');
-    wxp.setClipboardData({
-      data: 'hhhhhhhhhhh'
-    }).then(res => {
-      console.log('1',res)
-      return wxp.getClipboardData()
-    }).then(res => {
-      console.log('2',res)
-      wx.showToast({
-        title: '复制成功'
-      })
+  deleteRecord(id) {
+    wxp.showModal({
+      title: '删除记录',
+      content: '确定删除此密码记录？'
+    }).then(res=> {
+      if (res.confirm) {
+        console.log('用户点击确定')
+      } else if (res.cancel) {
+        console.log('用户点击取消')
+      }
     })
-  },
-
-})
+  }
+});
