@@ -74,6 +74,22 @@ Page({
       this.setData({
           list: list
       });
+      wx.cloud.callFunction({
+        // 云函数名称
+        name: 'init',
+        // 传给云函数的参数
+        data: {
+          type: 'change',
+          data: {
+            openId: 'ozhLN4vRc529URuy7fZ_N0lT239Y',
+            id: 'oren'
+          }
+        },
+      })
+      .then(res => {
+        console.log(res) // 3
+      })
+      .catch(console.error)
   },
 
   onCopy(e) {
