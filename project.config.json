@@ -11,6 +11,7 @@
 		"coverView": true,
 		"nodeModules": true,
 		"autoAudits": false,
+		"uglifyFileName": false,
 		"checkInvalidKey": true,
 		"checkSiteMap": true,
 		"uploadWithSourceMap": true,
@@ -18,8 +19,7 @@
 			"ignore": [],
 			"disablePlugins": [],
 			"outputPath": ""
-		},
-		"uglifyFileName": true
+		}
 	},
 	"appid": "wx3b6248c24022c717",
 	"projectname": "passWordKeeper",

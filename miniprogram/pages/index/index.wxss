@@ -1,4 +1,16 @@
 /**index.wxss**/
 .primary {
-    color: #576B95;
+  color: #576B95;
+}
+
+.hrline::after {
+  content: " ";
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  height: 1px;
+  border-top: 1rpx solid rgba(0, 0, 0, 0.1);
+  color: rgba(0, 0, 0, 0.1);
+  left: 16px;
 }

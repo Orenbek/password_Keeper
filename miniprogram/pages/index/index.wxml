@@ -4,11 +4,11 @@
     <view class="page__title">Slideview</view>
     <view class="page__desc">左滑操作</view>
   </view>
-  <view class="page__bd">
+  <view class="page__bd page__bd_spacing">
     <view class="weui-cells">
       <block wx:for="{{pwList}}">
         <mp-slideview buttons="{{slideButtons}}" bindbuttontap="slideButtonTap" disable="{{item.showDetail}}" wx:key="{{item.id}}" data-id="{{item.id}}">
-          <mp-cell>
+          <mp-cell class="hrline">
             <view>{{item.main}}</view>
             <view slot="footer" class="primary" bind:tap="onclick">复制</view>
           </mp-cell>

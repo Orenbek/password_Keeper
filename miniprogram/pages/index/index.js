@@ -31,13 +31,13 @@ Page({
       showDetail: false,
     }, {
       id: 1,
-      main: '第一个',
+      main: '第二个',
       userName: 'baidu',
       passWord: '234',
       showDetail: false,
     }, {
       id: 2,
-      main: '第一个',
+      main: '第三个',
       userName: 'bing',
       passWord: '345',
       showDetail: false,
