@@ -1,5 +1,9 @@
 // pages/form/form.js
-const { emailValidate } = require('../../utils/utils.js')
+const {
+  emailValidate
+} = require('../../utils/utils.js')
+
+const app = getApp();
 
 Page({
   data: {
@@ -38,7 +42,11 @@ Page({
       }, {
         maxlength: 18,
         message: '邮箱最长长度为18'
-      },{ email: true, validator: emailValidate, message: '请输入有效的邮箱地址' }],
+      }, {
+        email: true,
+        validator: emailValidate,
+        message: '请输入有效的邮箱地址'
+      }],
       // validator 这里只能引入一个外部函数 this在这里没有定义？ 先不管了。
     }, {
       name: 'desc',
@@ -49,13 +57,25 @@ Page({
         message: '备注最长长度为100'
       }],
     }],
-    descLength: 0
+    descLength: 0,
+    id: 0,
+    newRecord: true,
   },
 
+  onLoad(options) {
+    if (options.item) {
+      let item = JSON.parse(options.item);
+      this.setData({
+        formData: item.detail,
+        newRecord: false,
+        id: item.id
+      })
+    }
+    this.data._id = app.globalData._id;
+  },
 
-  submitForm() {
-    console.log('from data', this.data.formData);
-    this.selectComponent('#form').validate((valid, errors) => {
+  async submitForm() {
+    this.selectComponent('#form').validate(async (valid, errors) => {
       console.log('valid', valid, errors)
       if (!valid) {
         let err = '';
@@ -66,11 +86,65 @@ Page({
           errors: err
         })
       } else {
-        wx.showToast({
-          title: '校验通过'
-        })
+        await this.uploadData(this.data.formData)
       }
     })
+  },
+
+  async uploadData(data) {
+    let errors = ''
+    try {
+      if (this.data.newRecord) {
+        let res = await wx.cloud.callFunction({
+          name: 'adcs',
+          data: {
+            _id: this.data._id,
+            type: 'add',
+            param: {
+                id: this.data.id,
+                main: data.main,
+                detail: data
+            }
+          }
+        })
+        if (!res.result.errCode) {
+          wx.showToast({
+            title: `新增账号密码成功！`,
+            duration: 2000
+          })
+        } else {
+          errors = res.result.errMsg;
+        }
+      } else {
+        let res = await wx.cloud.callFunction({
+          name: 'adcs',
+          data: {
+            _id: this.data._id,
+            type: 'change',
+            param: {
+                id: this.data.id,
+                main: data.main,
+                detail: data
+            }
+          }
+        })
+        if (!res.result.errCode) {
+          wx.showToast({
+            title: `账号信息修改成功！`,
+            duration: 2000
+          })
+        } else {
+          errors = res.result.errMsg;
+        }
+      }
+    } catch (err) {
+      errors = err;
+    }
+    if (errors) {
+      this.setData({
+        errors
+      })
+    }
   },
 
   formInputChange(e) {
@@ -89,4 +163,17 @@ Page({
     }
   },
 
+
 })
+
+// param = {
+//   "id": 1,
+//   "main": "表单",
+//   "detail": {
+//       "main": "第一个",
+//       "username": "",
+//       "password": "123",
+//       "email": "邮箱账号",
+//       "desc": "备注详情"
+//   }
+// }

@@ -50,7 +50,7 @@ Page({
               newUser: this.data.newUser,
               mainPassWord: this.data.passWord
             }
-          })
+          });
           if (!res.result.errCode) {
             app.globalData._id = res.result._id;
             app.globalData.newUser = res.result.newUser;
@@ -68,7 +68,7 @@ Page({
             _id: this.data._id,
             mainPassWord: this.data.passWord
           }
-        })
+        });
         if (!res.result.errCode) {
           app.globalData.newUser = res.result.newUser;
           wxp.redirectTo({

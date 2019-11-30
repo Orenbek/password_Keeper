@@ -27,6 +27,7 @@ App({
         } else {
           wx.showToast({
             title: `程序初始化出错，errMsg: ${res.result.errMsg}`,
+            icon: 'none',
             duration: 2000
           })
         }
@@ -34,6 +35,7 @@ App({
       .catch(err=>{
         wx.showToast({
           title: '程序初始化出错，请查看网络状况！',
+          icon: 'none',
           duration: 2000
         })
       });

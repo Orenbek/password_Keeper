@@ -4,6 +4,7 @@
     "mp-cell": "/weui/cell/cell",
     "mp-slideview": "/weui/slideview/slideview",
     "mp-icon": "/weui/icon/icon",
-    "mp-loading": "/weui/loading/loading"
+    "mp-loading": "/weui/loading/loading",
+    "mp-toptips": "/weui/toptips/toptips"
   }
 }

@@ -25,16 +25,16 @@ exports.main = async (event, context) => {
   let res;
   switch (event.type) {
     case 'add':
-      res = add(event.data)
+      res = add(event)
       break;
     case 'del':
-      res = del(event.data)
+      res = del(event)
       break;
     case 'change':
-      res = await change(event.data)
+      res = await change(event)
       break;
     case 'search':
-      res = await search(event.data)
+      res = await search(event)
       console.log(res, 'result is above ')
       break;
     default:
@@ -54,17 +54,18 @@ function validateUser(openId) {
 
 function validateData(data) {
   let errMsg = []
-  if (!data.openId) {
-    errMsg.push('没有openid');
-  }
   if (!data['main']) {
     errMsg.push('密码描述不能为空')
   }
-  if (!data['password']) {
+  if(!data.detail['main']) {
+    errMsg.push('密码描述不能为空')
+  }
+  if (!data.detail['password']) {
     errMsg.push('密码不能为空')
   }
   return errMsg.length === 0 ? {
-    ok: true
+    ok: true,
+    errMsg
   } : {
     ok: false,
     errMsg
@@ -76,6 +77,13 @@ async function add(data) {
   let res;
   if (validate.ok && data._id) {
     try {
+      const result = await PWs.doc(data._id).get();
+      if (result.data.passWords && result.data.passWords.length !== 0) {
+        const lastId = result.data.passWords[result.data.passWords.length-1].id;
+        data.param.id = lastId + 1;
+      } else {
+        data.param.id = 1;
+      }
       res = await PWs.doc(data._id).update({
         data: {
           passWords: _.push(data.param)
@@ -93,8 +101,11 @@ async function add(data) {
     }
   } else if(validate.ok && data._id === 'empty') {
     try {
+      data.param.id = 1;
       res = await PWs.add({
-        data: data.param
+        data: {
+          passWords: data.param
+        }
       });
       res.ok = true;
       res.errCode = 0;
@@ -107,6 +118,9 @@ async function add(data) {
       }
     }
   } else {
+    if (!data._id) {
+      validate.errMsg.push('_id不能为空')
+    }
     res = {
       ok: false,
       errMsg: validate.errMsg,
@@ -123,6 +137,7 @@ async function del(data) {
       let result = await PWs.doc(data._id).get();
       if (result.data.passWords.length > 0) {
         result.data.passWords = result.data.passWords.filter(item => item.id !== data.id);
+        delete result.data._id;
         res = await PWs.doc(data._id).set({
           data: result.data
         })
@@ -132,7 +147,7 @@ async function del(data) {
       console.error('delete 出现错误！', e)
       res = {
         ok: false,
-        errMsg: "数据修改失败!",
+        errMsg: "数据删除失败!",
         errCode: 3000
       }
     }
@@ -149,13 +164,13 @@ async function del(data) {
 async function change(data) {
   const validate = validateData(data.param);
   let res;
-  if (validate.ok && data.id) {
+  if (validate.ok && data._id && data.param.id) {
     try {
       res = await PWs.where(_.and([{
           _id: data._id
         },
         {
-          "passWords.id": data.id
+          "passWords.id": data.param.id
         }
       ])).update({
         data: {
@@ -175,6 +190,9 @@ async function change(data) {
       }
     }
   } else {
+    if (!data._id || !data.param.id) {
+      validate.errMsg.push(' _id 和 id 不能为空')
+    }
     res = {
       ok: false,
       errMsg: validate.errMsg,

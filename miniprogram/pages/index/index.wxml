@@ -1,4 +1,5 @@
 <view class="page">
+  <mp-toptips msg="{{errors}}" type="error" show="{{errors}}"></mp-toptips>
   <view class="page__hd">
     <view class="page__title">密码管理工具</view>
     <view class="page__desc">此密码管理工具是为了应对账号密码繁多记不住，或者是密码单一，想要加强密码安全性而设计的工具。工具很精简，希望你喜欢。</view>
@@ -7,10 +8,10 @@
     <view class="weui-flex">
       <block wx:for="{{list}}" wx:key="id">
         <view class="kind-list__item">
-          <mp-slideview buttons="{{slideButtons}}" bindbuttontap="slideButtonTap" disable="{{item.open}}" wx:key="{{item.id}}" data-id="{{item.id}}" bindtap="kindToggle" ext-class="{{item.open ? 'kind-list__item-hd_show' : ''}}">
+          <mp-slideview buttons="{{slideButtons}}" bindbuttontap="slideButtonTap" disable="{{item.open}}" wx:key="{{item.id}}" data-item="{{item}}" bindtap="kindToggle" ext-class="{{item.open ? 'kind-list__item-hd_show' : ''}}">
             <mp-cell>
               <view>{{item.main}}</view>
-              <view slot="footer" class="primary" catch:tap="onCopy" data-password="{{item.pages.passWord}}">
+              <view slot="footer" class="primary" catch:tap="onCopy" data-password="{{item.detail.password}}">
                 复制
               </view>
             </mp-cell>
@@ -19,31 +20,31 @@
             <view class="weui-cells {{item.open ? 'weui-cells_show' : ''}}">
               <view style="position: relative">
                 <mp-cell ext-class="cellsty">
-                  <view class="md">{{item.pages.main}}</view>
+                  <view class="md">{{item.detail.main}}</view>
                   <view slot="footer" class="sm">描述</view>
                 </mp-cell>
               </view>
-              <view style="position: relative" hidden="{{!item.pages.userName}}">
+              <view style="position: relative" hidden="{{!item.detail.uername}}">
                 <mp-cell ext-class="cellsty">
-                  <view class="md">{{item.pages.userName}}</view>
+                  <view class="md">{{item.detail.username}}</view>
                   <view slot="footer" class="sm">用户名</view>
                 </mp-cell>
               </view>
               <view style="position: relative">
                 <mp-cell ext-class="cellsty">
-                  <view class="md">{{item.pages.passWord}}</view>
+                  <view class="md">{{item.detail.password}}</view>
                   <view slot="footer" class="sm">密码</view>
                 </mp-cell>
               </view>
-              <view style="position: relative" hidden="{{!item.pages.email}}">
+              <view style="position: relative" hidden="{{!item.detail.email}}">
                 <mp-cell ext-class="cellsty">
-                  <view class="md">{{item.pages.email}}</view>
+                  <view class="md">{{item.detail.email}}</view>
                   <view slot="footer" class="sm">绑定邮箱</view>
                 </mp-cell>
               </view>
-              <view style="position: relative" hidden="{{!item.pages.desc}}">
+              <view style="position: relative" hidden="{{!item.detail.desc}}">
                 <mp-cell ext-class="cellsty">
-                  <view class="md">{{item.pages.desc}}</view>
+                  <view class="md">{{item.detail.desc}}</view>
                   <view slot="footer" class="sm">备注</view>
                 </mp-cell>
               </view>
@@ -52,13 +53,13 @@
         </view>
       </block>
       <view wx:if="{{hasMore}}" class="weui-btn loadmore">
-        <view wx:if="{{!loadingList}}">加载更多</view>
+        <view wx:if="{{!loadingList}}" bindtap="loadMore">加载更多</view>
         <mp-loading wx:if="{{loadingList}}" type="circle" ext-class="loading"></mp-loading>
       </view>
       <view wx:if="{{!hasMore}}" class="weui-loadmore weui-loadmore_line">
         <view class="weui-loadmore__tips weui-loadmore__tips_in-line" style="background-color: #EDEDED">暂无数据</view>
       </view>
-      <mp-icon icon="add2" color="#06ad56" type="field" size="{{30}}" class="addnew"></mp-icon>
+      <mp-icon icon="add2" color="#06ad56" type="field" size="{{30}}" class="addnew" bind:tap="addNew"></mp-icon>
     </view>
   </view>
   <view class="page__ft fixed__bottom">
