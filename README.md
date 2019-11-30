@@ -1,4 +1,4 @@
-# Password Keeper quickstart
+# Password Guard quickstart
 
 - 注册个人小程序 开通云开发
 - 下载代码
