@@ -5,7 +5,7 @@ cloud.init({
   env: cloud.DYNAMIC_CURRENT_ENV
 })
 
-const validUserOpenId = 'ozhLN4vRc529URuy7fZ_N0lT239Y'
+const validUserOpenId = 'orB-25N7nDKY75KYk8UnOqVFd0GQ'
 
 const db = cloud.database();
 const PWs = db.collection('PWs');

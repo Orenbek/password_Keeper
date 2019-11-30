@@ -3,7 +3,7 @@ import { promisifyAll, promisify } from 'miniprogram-api-promise';
 const wxp = {}
 // promisify all wx's api
 promisifyAll(wx, wxp)
-const cloudEnvId = 'test-env-57b34f';
+const cloudEnvId = 'pwguard-env';
 
 App({
   onLaunch: function () {

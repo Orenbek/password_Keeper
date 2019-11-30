@@ -3,7 +3,7 @@
 
 const cloud = require('wx-server-sdk')
 
-const validUserOpenId = 'ozhLN4vRc529URuy7fZ_N0lT239Y'
+const validUserOpenId = 'orB-25N7nDKY75KYk8UnOqVFd0GQ'
 
 // 初始化 cloud
 cloud.init({
@@ -39,7 +39,8 @@ exports.main = async (event, context) => {
       res = await PWs.add({
         data: {
           _openid: event.userInfo.openId,
-          mainPassWord: event.mainPassWord
+          mainPassWord: event.mainPassWord,
+          passWords: []
         }
       });
       res.ok = true;
