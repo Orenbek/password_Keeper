@@ -2,6 +2,10 @@
 const {
   emailValidate
 } = require('../../utils/utils.js')
+const {
+  Decrypt ,
+  Encrypt
+} = require('../../utils/crypto.js')
 
 const app = getApp();
 
@@ -103,7 +107,13 @@ Page({
             param: {
                 id: this.data.id,
                 main: data.main,
-                detail: data
+                detail: {
+                  desc: data.desc,
+                  email: data.email,
+                  main: data.main,
+                  username: data.username,
+                  password: Encrypt(data.password)
+                }
             }
           }
         })
@@ -124,7 +134,13 @@ Page({
             param: {
                 id: this.data.id,
                 main: data.main,
-                detail: data
+                detail: {
+                  desc: data.desc,
+                  email: data.email,
+                  main: data.main,
+                  username: data.username,
+                  password: Encrypt(data.password)
+                }
             }
           }
         })

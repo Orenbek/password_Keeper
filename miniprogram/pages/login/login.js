@@ -4,6 +4,11 @@ import {
   promisifyAll,
   promisify
 } from 'miniprogram-api-promise';
+const {
+  Decrypt ,
+  Encrypt
+} = require('../../utils/crypto.js')
+
 const wxp = {}
 // promisify all wx's api
 promisifyAll(wx, wxp)
@@ -48,7 +53,7 @@ Page({
             name: 'login',
             data: {
               newUser: this.data.newUser,
-              mainPassWord: this.data.passWord
+              mainPassWord: Encrypt(this.data.passWord)
             }
           });
           if (!res.result.errCode) {
@@ -66,7 +71,7 @@ Page({
           name: 'login',
           data: {
             _id: this.data._id,
-            mainPassWord: this.data.passWord
+            mainPassWord: Encrypt(this.data.passWord)
           }
         });
         if (!res.result.errCode) {

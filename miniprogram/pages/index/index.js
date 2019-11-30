@@ -2,6 +2,11 @@ import {
   promisifyAll,
   promisify
 } from 'miniprogram-api-promise';
+const {
+  Decrypt ,
+  Encrypt
+} = require('../../utils/crypto.js')
+
 const wxp = {}
 // promisify all wx's api
 promisifyAll(wx, wxp)
@@ -40,6 +45,7 @@ Page({
       if (!res.result.errCode) {
         let totalList = res.result.data.passWords.map(item => {
           item.open = false;
+          item.detail.password = Decrypt(item.detail.password);
           return item;
         });
         this.data.totalList = totalList;
