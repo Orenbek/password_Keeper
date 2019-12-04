@@ -14,7 +14,6 @@ const $ = db.command.aggregate;
 
 
 exports.main = async (event, context) => {
-  // 我的openid "ozhLN4vRc529URuy7fZ_N0lT239Y" 同一个用户同一个小程序 openid是唯一的
 
   if (!validateUser(event.userInfo.openId)) {
     return {
@@ -35,7 +34,6 @@ exports.main = async (event, context) => {
       break;
     case 'search':
       res = await search(event)
-      console.log(res, 'result is above ')
       break;
     default:
       console.log('Sorry, we are out of case.');

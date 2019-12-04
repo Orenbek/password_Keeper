@@ -152,10 +152,13 @@ Page({
           }
         })
         if (!res.result.errCode) {
-          wx.showToast({
+          await wxp.showToast({
             title: `新增账号密码成功！`,
             duration: 2000
           })
+          setTimeout(()=>{
+            wx.navigateBack();
+          }, 2000)
         } else {
           errors = res.result.errMsg;
         }
@@ -179,10 +182,13 @@ Page({
           }
         })
         if (!res.result.errCode) {
-          wx.showToast({
+          await wxp.showToast({
             title: `账号信息修改成功！`,
             duration: 2000
           })
+          setTimeout(()=>{
+            wx.navigateBack();
+          }, 2000)
         } else {
           errors = res.result.errMsg;
         }
@@ -302,7 +308,5 @@ Page({
       })
     });
   },
-
-
 
 })
