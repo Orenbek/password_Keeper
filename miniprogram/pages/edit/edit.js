@@ -7,6 +7,13 @@ const {
   Encrypt
 } = require('../../utils/crypto.js')
 const generatePassword = require("../../utils/passwordGenerator.js");
+import {
+  promisifyAll,
+  promisify
+} from 'miniprogram-api-promise';
+const wxp = {}
+// promisify all wx's api
+promisifyAll(wx, wxp)
 
 const UPPERCASE_RE = 'A-Z';
 const LOWERCASE_RE = 'a-z';
@@ -90,6 +97,7 @@ Page({
       { name: '数字', value: 'NUMBER',checked: true, id: 2 },
       { name: '符号', value: 'SPECIAL_CHAR', id: 3 },
     ],
+    generatedPassword: '',
   },
 
   onLoad(options) {
@@ -206,35 +214,49 @@ Page({
   },
 
   isStrongEnough(password) {
-    const uc = password.match(new RegExp(`([${UPPERCASE}])`, 'g'));
-    const lc = password.match(new RegExp(`([${LOWERCASE}])`, 'g'));
-    const n = password.match(new RegExp(`([${NUMBER}])`, 'g'));
-    const sc = password.match(new RegExp(`([${SPECIAL_CHAR}])`, 'g'));
     const {UPPERCASE,LOWERCASE,NUMBER,SPECIAL_CHAR} = this.data.PWtype;
-    let upMin = UPPERCASE ? uppercaseMinCount : 0;
-    let lowMin = LOWERCASE ? lowercaseMinCount : 0;
-    let numMin = NUMBER ? numberMinCount : 0;
-    let speMax = SPECIAL_CHAR ? specialMaxCount : 0;
-
-    return uc && uc.length >= upMin &&
-      lc && lc.length >= lowMin &&
-      n && n.length >= numMin &&
-      sc && sc.length <= speMax;
+    if (UPPERCASE) {
+      const uc = password.match(new RegExp(`([${UPPERCASE_RE}])`, 'g'));
+      if (!uc || uc.length < uppercaseMinCount) {
+        return false;
+      }
+    }
+    if (LOWERCASE) {
+      const lc = password.match(new RegExp(`([${LOWERCASE_RE}])`, 'g'));
+      if (!lc || lc.length < lowercaseMinCount) {
+        return false;
+      }
+    }
+    if (NUMBER) {
+      const n = password.match(new RegExp(`([${NUMBER_RE}])`, 'g'));
+      if (!n || n.length < numberMinCount) {
+        return false;
+      }
+    }
+    if (SPECIAL_CHAR) {
+      const sc = password.match(new RegExp(`([${SPECIAL_CHAR_RE}])`, 'g'));
+      if (!sc || sc.length > specialMaxCount) {
+        return false;
+      }
+    }
+    return true;
   },
 
   customPassword() {
-    let password = "";
+    let password = '';
     const {UPPERCASE,LOWERCASE,NUMBER,SPECIAL_CHAR} = this.data.PWtype;
-    let regStr
+    let regStr = '';
     regStr += UPPERCASE ? UPPERCASE_RE : '';
     regStr += LOWERCASE ? LOWERCASE_RE : '';
     regStr += NUMBER ? NUMBER_RE : '';
     regStr += SPECIAL_CHAR ? SPECIAL_CHAR_RE : '';
+    const reg = new RegExp(`([${regStr}])`, 'g')
     while (!this.isStrongEnough(password)) {
-      let reg = new RegExp(`([${regStr}])`, 'g')
       password = generatePassword(this.data.PWLen, false, reg);
     }
-    return password;
+    this.setData({
+      generatedPassword: password,
+    })
   },
 
   checkboxChange: function (event) {
@@ -268,6 +290,17 @@ Page({
     this.setData({
       PWLen: e.detail.value
     })
+  },
+
+  onCopy() {
+    wxp.setClipboardData({
+      data: this.data.generatedPassword
+    }).then(() => {
+      wx.showToast({
+        title: '复制成功',
+        icon: 'none'
+      })
+    });
   },
 
 

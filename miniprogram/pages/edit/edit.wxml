@@ -41,12 +41,12 @@
         </mp-cell>
       </mp-cells>
       <view class="generated-password">
-        <view class="flex-g">
-          <input value="" class="generated-password__input" type="text" />
+        <view class="flex-g" style="margin-right: -66px">
+          <input value="{{generatedPassword}}" disabled="true" class="generated-password__input" type="text" />
         </view>
-        <view class="generated-password__icon-wrapper">
-          <image src="../../images/img-icon-copy-@3x.png" class="icon-copy" mode="widthFix" />
-          <image src="../../images/icon-generate-new.svg" class="icon-copy" mode="widthFix" />
+        <view class="generated-password__icon-wrapper" style="z-index:999">
+          <image src="../../images/img-icon-copy-@3x.png" catch:tap="onCopy" class="icon-copy" mode="widthFix" />
+          <view catch:tap="customPassword" class="icon-copy generate" hover-class="generating"/>
         </view>
       </view>
       <view class="weui-btn-area">
