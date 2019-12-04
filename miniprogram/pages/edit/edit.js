@@ -6,6 +6,16 @@ const {
   Decrypt ,
   Encrypt
 } = require('../../utils/crypto.js')
+const generatePassword = require("../../utils/passwordGenerator.js");
+
+const UPPERCASE_RE = 'A-Z';
+const LOWERCASE_RE = 'a-z';
+const NUMBER_RE = '0-9';
+const SPECIAL_CHAR_RE = '\\!\\#\\$\\%\\&\\*\\,\\-\\.\\?\\@\\_\\~';
+const uppercaseMinCount = 3;
+const lowercaseMinCount = 3;
+const numberMinCount = 2;
+const specialMaxCount = 2;
 
 const app = getApp();
 
@@ -38,6 +48,9 @@ Page({
       }, {
         maxlength: 18,
         message: '密码最长长度为18'
+      },{
+        minlength: 4,
+        message: '密码最小长度为4'
       }],
     }, {
       name: 'email',
@@ -64,6 +77,19 @@ Page({
     descLength: 0,
     id: 0,
     newRecord: true,
+    PWLen: 6,
+    PWtype: {
+      UPPERCASE: false,
+      LOWERCASE: false,
+      NUMBER: true,
+      SPECIAL_CHAR: false
+    },
+    checkboxItems: [
+      { name: '大写字母', value: 'UPPERCASE', id: 0 },
+      { name: '小写字母', value: 'LOWERCASE', id: 1 },
+      { name: '数字', value: 'NUMBER',checked: true, id: 2 },
+      { name: '符号', value: 'SPECIAL_CHAR', id: 3 },
+    ],
   },
 
   onLoad(options) {
@@ -179,17 +205,71 @@ Page({
     }
   },
 
+  isStrongEnough(password) {
+    const uc = password.match(new RegExp(`([${UPPERCASE}])`, 'g'));
+    const lc = password.match(new RegExp(`([${LOWERCASE}])`, 'g'));
+    const n = password.match(new RegExp(`([${NUMBER}])`, 'g'));
+    const sc = password.match(new RegExp(`([${SPECIAL_CHAR}])`, 'g'));
+    const {UPPERCASE,LOWERCASE,NUMBER,SPECIAL_CHAR} = this.data.PWtype;
+    let upMin = UPPERCASE ? uppercaseMinCount : 0;
+    let lowMin = LOWERCASE ? lowercaseMinCount : 0;
+    let numMin = NUMBER ? numberMinCount : 0;
+    let speMax = SPECIAL_CHAR ? specialMaxCount : 0;
+
+    return uc && uc.length >= upMin &&
+      lc && lc.length >= lowMin &&
+      n && n.length >= numMin &&
+      sc && sc.length <= speMax;
+  },
+
+  customPassword() {
+    let password = "";
+    const {UPPERCASE,LOWERCASE,NUMBER,SPECIAL_CHAR} = this.data.PWtype;
+    let regStr
+    regStr += UPPERCASE ? UPPERCASE_RE : '';
+    regStr += LOWERCASE ? LOWERCASE_RE : '';
+    regStr += NUMBER ? NUMBER_RE : '';
+    regStr += SPECIAL_CHAR ? SPECIAL_CHAR_RE : '';
+    while (!this.isStrongEnough(password)) {
+      let reg = new RegExp(`([${regStr}])`, 'g')
+      password = generatePassword(this.data.PWLen, false, reg);
+    }
+    return password;
+  },
+
+  checkboxChange: function (event) {
+    if (event.detail.value.length === 0) {
+      this.setData({
+        checkboxItems: this.data.checkboxItems
+      })
+      return;
+    }
+    this.data.checkboxItems = this.data.checkboxItems.map(item => {
+      item.checked = false;
+      return item;
+    })
+    let PWtype = {
+      UPPERCASE: false,
+      LOWERCASE: false,
+      NUMBER: false,
+      SPECIAL_CHAR: false
+    }
+    for (let id of event.detail.value.values()) {
+      this.data.checkboxItems[id].checked = true;
+      PWtype[this.data.checkboxItems[id].value] = true;
+    }
+    this.setData({
+      checkboxItems: this.data.checkboxItems,
+      PWtype
+    })
+  },
+
+  slideChange(e){
+    this.setData({
+      PWLen: e.detail.value
+    })
+  },
+
+
 
 })
-
-// param = {
-//   "id": 1,
-//   "main": "表单",
-//   "detail": {
-//       "main": "第一个",
-//       "username": "",
-//       "password": "123",
-//       "email": "邮箱账号",
-//       "desc": "备注详情"
-//   }
-// }

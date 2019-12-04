@@ -65,3 +65,17 @@ page {
 .sm{
   font-size: 14px;
 }
+
+.flex-g {
+  flex-grow: 1;
+}
+
+.flex-s {
+  flex-shrink: 1;
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

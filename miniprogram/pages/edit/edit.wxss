@@ -2,3 +2,91 @@
 .primary {
   color: #576B95;
 }
+
+.generated-password {
+  border: 1px solid #eaeaea;
+  border-radius: 4px;
+  background-color: #fff;
+  box-shadow: 0 1px 4px rgba(0,0,0,.15);
+  display: flex;
+  position: relative;
+  margin: 10rpx;
+  padding: 20rpx 16rpx;
+}
+.generated-password__input {
+  height: 50rpx;
+  border: 0;
+  color: #506175;
+  font-family: monospace;
+  font-size: 36rpx;
+  line-height: 50rpx;
+  text-align: left;
+}
+.generated-password__icon-wrapper {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  padding: 4rpx 0;
+}
+
+.icon-copy {
+  width: 48rpx;
+  padding-left: 14rpx;
+}
+
+
+.ui-radio radio,.ui-radio checkbox {
+  display: none;
+}
+
+.label{
+  margin-left: 10rpx;
+  display: flex;
+  flex-direction: row;
+  flex-wrap:wrap;
+}
+
+.ui-radio{
+  border: 1px solid #D9D9D9;
+  border-radius: 5px;
+  width: 144rpx;
+  height: 66rpx;
+  text-align: center;
+  margin: 10rpx 10rpx;
+  white-space:nowrap;
+  font-size: 14px;
+}
+
+.ui-radio.active{
+  background-color: #07c160;
+  color: #fff;
+  border-radius: 5px;
+  border: 1px solid #07c160;
+  width: 144rpx;
+  height: 66rpx;
+  text-align: center;
+  margin: 10rpx 10rpx;
+  white-space:nowrap;
+}
+
+.text{
+  color:#000;
+  line-height:66rpx;
+  font-size: 14px;
+}
+
+.ui-radio.active .text{
+  color:#fff;
+  line-height:66rpx;
+  font-size: 14px;
+}
+
+.len {
+  font-size: 28rpx;
+  margin-right: 20rpx;
+}
+
+.lilpadding{
+  padding-top: 20rpx !important;
+  padding-bottom: 20rpx !important;
+}

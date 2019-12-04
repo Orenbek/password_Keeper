@@ -24,6 +24,31 @@
           </mp-cell>
         </mp-cells>
       </mp-form>
+      <mp-cells title="生成安全密码">
+        <mp-cell ext-class="lilpadding">
+          <checkbox-group bindchange="checkboxChange">
+            <view class='label'>
+              <label class="ui-radio {{item.checked==true?'active':''}}" wx:for="{{checkboxItems}}">
+                <checkbox value="{{item.id}}" checked="{{item.checked}}" />
+                <text class="text">{{item.name}}</text>
+              </label>
+            </view>
+          </checkbox-group>
+        </mp-cell>
+        <mp-cell ext-class="lilpadding">
+          <text slot="title" class="len">密码长度</text>
+          <slider max="14" min="4" show-value value="{{PWLen}}" bindchange="slideChange" />
+        </mp-cell>
+      </mp-cells>
+      <view class="generated-password">
+        <view class="flex-g">
+          <input value="" class="generated-password__input" type="text" />
+        </view>
+        <view class="generated-password__icon-wrapper">
+          <image src="../../images/img-icon-copy-@3x.png" class="icon-copy" mode="widthFix" />
+          <image src="../../images/icon-generate-new.svg" class="icon-copy" mode="widthFix" />
+        </view>
+      </view>
       <view class="weui-btn-area">
         <button class="weui-btn" type="primary" bindtap="submitForm">确定</button>
       </view>
