@@ -1,5 +1,11 @@
 <view class="page">
   <mp-toptips msg="{{errors}}" type="error" show="{{errors}}"></mp-toptips>
+  <popup show="{{!ok}}" wx:if="{{!ok}}">
+    <view slot="content">
+      <view style="text-align: center">密码验证</view>
+      <sixInput bindvalueSix="validatePassword" clear="{{clear}}"/>
+    </view>
+  </popup>
   <view class="page__hd">
     <view class="page__title">密码管理工具</view>
     <view class="page__desc">此密码管理工具是为了应对账号密码繁多记不住，或者是密码单一，想要加强密码安全性而设计的工具。工具很精简，希望你喜欢。</view>
@@ -57,7 +63,9 @@
         <mp-loading wx:if="{{loadingList}}" type="circle" ext-class="loading"></mp-loading>
       </view>
       <view wx:if="{{!hasMore}}" class="weui-loadmore weui-loadmore_line">
-        <view class="weui-loadmore__tips weui-loadmore__tips_in-line" style="background-color: #EDEDED">暂无数据</view>
+        <view class="weui-loadmore__tips weui-loadmore__tips_in-line" style="background-color: #EDEDED">
+          暂无数据
+        </view>
       </view>
       <mp-icon icon="add2" color="#06ad56" type="field" size="{{30}}" class="addnew" bind:tap="addNew"></mp-icon>
     </view>

@@ -27,14 +27,30 @@ Page({
     loadingList: false,
     _id: '',
     errors: '',
-    slice: 8
+    slice: 8,
+    clear: false,
+    password: '',
+    ok: true,
   },
 
   async onShow() {
+    // 每次进来都刷一遍后端数据
     let errors = ''
     try {
       await app.globalData.initPromise;
+      let timestamp = Date.now()
+      timestamp = (timestamp - timestamp%1000)/1000;
+      if ( app.globalData.hideTime && (timestamp - app.globalData.hideTime) > 10 || !this.data.ok ) {
+        this.setData({
+          ok: false
+        })
+      } else {
+        this.setData({
+          ok: true
+        })
+      }
       this.data._id = app.globalData._id;
+      this.data.password = app.globalData.password;
       let res = await wx.cloud.callFunction({
         name: 'adcs',
         data: {
@@ -73,6 +89,16 @@ Page({
         errors
       })
     }
+  },
+
+  onHide() {
+    let timestamp = Date.now()
+    app.globalData.hideTime = (timestamp - timestamp%1000)/1000;
+  },
+
+  onUnload() {
+    let timestamp = Date.now()
+    app.globalData.hideTime = (timestamp - timestamp%1000)/1000;
   },
 
   kindToggle: function (e) {
@@ -194,5 +220,19 @@ Page({
       hasMore,
       loadingList: false
     })
+  },
+
+  async validatePassword(e) {
+    if (e.detail === app.globalData.password) {
+      app.globalData.ok = true;
+      this.setData({
+        ok: true
+      })
+    } else {
+      this.setData({
+        clear: !this.data.clear
+      })
+      await wxp.vibrateShort()
+    }
   }
 });

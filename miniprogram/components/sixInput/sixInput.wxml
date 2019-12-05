@@ -1,0 +1,14 @@
+<view class='content'>
+    <!-- 输入框（表格） -->
+    <view class='{{(interval?"pay_number":"pay_number_interval")}} {{shake?"shake":""}} {{get_focus?"get_focus":""}}' catchtap="set_focus" style='width:{{width}};height:{{height}};'>
+      <view class='{{get_focus?(interval?"get_focus_dot":"get_focus_dot_interval"):(interval?"password_dot":"password_dot_interval")}} {{index==0?"noBorder":""}}' wx:for="{{value_num}}" wx:key="{{index}}">
+        <view wx:if="{{(value_length==item-1)&&get_focus}}" class="cursor"></view>
+        <view wx:if="{{value_length>=item}}" class="{{see?'':'dot'}}">{{see?val_arr[index]:""}}</view>
+      </view>
+    </view>
+
+    <!-- 输入框（隐藏） -->
+    <input value="{{input_value}}" focus="{{get_focus}}" maxlength="6" type="number" class='input_container'
+      bindinput="get_value" bindfocus="focus" bindblur="blur" maxlength="10" password pattern="[0-9]*" />
+
+  </view>

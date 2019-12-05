@@ -1,0 +1,54 @@
+/* components/popup.wxss */
+.mask {
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 5000;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  backdrop-filter: blur(3px);
+  display: flex;
+  justify-content: center;
+}
+
+.dialog {
+  position: relative;
+  width: 90vw;
+  margin-top: 20vh;
+  height: 20vh;
+  background-color: #EDEDED;
+  border-radius: 8px;
+  box-shadow: inset 2px 2px 4px 1px rgba(0, 0, 0, 0.15);
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.fadein {
+  animation: fadeIn .4s;
+  animation-fill-mode:forwards;
+  -webkit-animation: fadeIn .4s;
+}
+
+.fadeout {
+  visibility: hidden;
+  animation-fill-mode:forwards;
+  animation: fadeOut .4s;
+  -webkit-animation: fadeOut .4s;
+  transition: all .4s;
+}
+
+.popin {
+  animation: bounceInDown .6s;
+  animation-fill-mode:forwards;
+}
+
+.popout {
+  opacity: 0;
+  animation: bounceOutUp .4s;
+  animation-fill-mode:forwards;
+  -webkit-animation: bounceOutUp .4s;
+  transition: all .4s;
+}

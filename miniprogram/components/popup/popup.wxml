@@ -1,0 +1,6 @@
+<!--components/popup.wxml-->
+<view class="mask {{show ? 'fadein' :'fadeout'}}">
+  <view class="dialog {{show ? 'popin' :'popout'}}">
+    <slot name="content"></slot>
+  </view>
+</view>

@@ -3,6 +3,8 @@
     "mp-cells": "/weui/cells/cells",
     "mp-cell": "/weui/cell/cell",
     "mp-toptips": "/weui/toptips/toptips",
-    "mp-form": "/weui/form/form"
+    "mp-form": "/weui/form/form",
+    "popup": "/components/popup/popup",
+    "sixInput": "/components/sixInput/sixInput"
   }
 }

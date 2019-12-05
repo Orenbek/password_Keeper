@@ -57,6 +57,8 @@ Page({
             }
           });
           if (!res.result.errCode) {
+            app.globalData.password = this.data.passWord;
+            app.globalData.ok = true;
             app.globalData._id = res.result._id;
             app.globalData.newUser = res.result.newUser;
             wxp.redirectTo({
@@ -75,6 +77,8 @@ Page({
           }
         });
         if (!res.result.errCode) {
+          app.globalData.password = this.data.passWord;
+          app.globalData.ok = true;
           app.globalData.newUser = res.result.newUser;
           wxp.redirectTo({
             url: '../index/index'

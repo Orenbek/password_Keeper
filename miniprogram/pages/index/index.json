@@ -5,6 +5,8 @@
     "mp-slideview": "/weui/slideview/slideview",
     "mp-icon": "/weui/icon/icon",
     "mp-loading": "/weui/loading/loading",
-    "mp-toptips": "/weui/toptips/toptips"
+    "mp-toptips": "/weui/toptips/toptips",
+    "popup": "/components/popup/popup",
+    "sixInput": "/components/sixInput/sixInput"
   }
 }

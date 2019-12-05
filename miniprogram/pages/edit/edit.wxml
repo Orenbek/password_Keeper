@@ -1,5 +1,11 @@
 <view>
   <mp-toptips msg="{{errors}}" type="error" show="{{errors}}"></mp-toptips>
+  <popup show="{{!ok}}" wx:if="{{!ok}}">
+    <view slot="content">
+      <view style="text-align: center">密码验证</view>
+      <sixInput bindvalueSix="validatePassword" clear="{{clear}}"/>
+    </view>
+  </popup>
   <view class="page" xmlns:wx="http://www.w3.org/1999/xhtml">
     <view class="page__bd">
       <mp-form id="form" rules="{{rules}}" models="{{formData}}">
@@ -18,7 +24,7 @@
           </mp-cell>
           <mp-cell prop="desc" show-error>
             <view class="weui-cell__bd">
-              <textarea bindinput="formInputChange" data-field="desc" value="{{formData.desc}}" class="weui-textarea" placeholder="请输入备注" style="height: 3.3em" />
+              <textarea bindinput="formInputChange" data-field="desc" value="{{formData.desc}}" class="weui-input" disabled="{{!ok}}" placeholder-style="{{!ok ? 'color: transparent' : ''}}" placeholder="请输入备注" style="height: 3.3em" />
               <view class="weui-textarea-counter">{{descLength}}/200</view>
             </view>
           </mp-cell>
@@ -37,7 +43,7 @@
         </mp-cell>
         <mp-cell ext-class="lilpadding">
           <text slot="title" class="len">密码长度</text>
-          <slider max="14" min="4" show-value value="{{PWLen}}" bindchange="slideChange" />
+          <slider max="14" min="{{sliMinLen}}" show-value value="{{PWLen}}" bindchange="slideChange" />
         </mp-cell>
       </mp-cells>
       <view class="generated-password">

@@ -98,6 +98,10 @@ Page({
       { name: '符号', value: 'SPECIAL_CHAR', id: 3 },
     ],
     generatedPassword: '',
+    clear: false,
+    password: '',
+    ok: true,
+    sliMinLen: 6,
   },
 
   onLoad(options) {
@@ -109,7 +113,37 @@ Page({
         id: item.id
       })
     }
+    this.data.password = app.globalData.password;
+    this.setData({
+      ok: app.globalData.ok
+    })
     this.data._id = app.globalData._id;
+  },
+
+  onShow() {
+    let timestamp = Date.now()
+    timestamp = (timestamp - timestamp%1000)/1000;
+    if ( app.globalData.hideTime && (timestamp - app.globalData.hideTime) > 10 || !this.data.ok) {
+      this.setData({
+        ok: false
+      })
+    } else {
+      this.setData({
+        ok: true
+      })
+    }
+  },
+
+  onHide() {
+    let timestamp = Date.now()
+    app.globalData.hideTime = (timestamp - timestamp%1000)/1000;
+    // 息屏状态
+  },
+
+  onUnload() {
+    let timestamp = Date.now()
+    app.globalData.hideTime = (timestamp - timestamp%1000)/1000;
+    // 返回上一页时调用
   },
 
   async submitForm() {
@@ -265,7 +299,7 @@ Page({
     })
   },
 
-  checkboxChange: function (event) {
+  checkboxChange(event) {
     if (event.detail.value.length === 0) {
       this.setData({
         checkboxItems: this.data.checkboxItems
@@ -288,7 +322,8 @@ Page({
     }
     this.setData({
       checkboxItems: this.data.checkboxItems,
-      PWtype
+      PWtype,
+      sliMinLen: this.sliderMinLen(event.detail.value.length)
     })
   },
 
@@ -308,5 +343,31 @@ Page({
       })
     });
   },
+
+  async validatePassword(e) {
+    if (e.detail === app.globalData.password) {
+      app.globalData.ok = true;
+      this.setData({
+        ok: true
+      })
+    } else {
+      this.setData({
+        clear: !this.data.clear
+      })
+      await wxp.vibrateShort()
+    }
+  },
+
+  sliderMinLen(type) {
+    if (type <= 2) {
+      return 6
+    }
+    if (type === 3) {
+      return 8
+    }
+    if (type === 4) {
+      return 10
+    }
+  }
 
 })

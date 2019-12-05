@@ -42,5 +42,8 @@ App({
   },
   globalData: {
     newUser: true,
+    password: '',
+    ok: false,
+    hideTime: null
   }
 })
