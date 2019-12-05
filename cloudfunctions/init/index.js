@@ -15,13 +15,13 @@ const $ = db.command.aggregate;
 
 // 云函数入口函数
 exports.main = async (event, context) => {
-  if (!validate(event.userInfo.openId)) {
-    return {
-      errCode: 1000,
-      goodToGo: false,
-      errMsg: '您被限制使用此小程序！'
-    }
-  }
+  // if (!validate(event.userInfo.openId)) {
+  //   return {
+  //     errCode: 1000,
+  //     goodToGo: false,
+  //     errMsg: '您被限制使用此小程序！'
+  //   }
+  // }
   let res = {
     openId: event.userInfo.openId,
     ok: true,

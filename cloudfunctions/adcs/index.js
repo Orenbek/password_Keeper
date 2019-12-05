@@ -15,12 +15,12 @@ const $ = db.command.aggregate;
 
 exports.main = async (event, context) => {
 
-  if (!validateUser(event.userInfo.openId)) {
-    return {
-      errCode: 1000,
-      errMsg: '您被限制使用此小程序！'
-    }
-  }
+  // if (!validateUser(event.userInfo.openId)) {
+  //   return {
+  //     errCode: 1000,
+  //     errMsg: '您被限制使用此小程序！'
+  //   }
+  // }
   let res;
   switch (event.type) {
     case 'add':

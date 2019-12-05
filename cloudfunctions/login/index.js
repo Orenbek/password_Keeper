@@ -26,13 +26,13 @@ exports.main = async (event, context) => {
   // 我的openid "ozhLN4vRc529URuy7fZ_N0lT239Y" 同一个用户同一个小程序 openid是唯一的
 
   // 获取 WX Context (微信调用上下文)，包括 OPENID、APPID、及 UNIONID（需满足 UNIONID 获取条件）等信息
-  if (!validate(event.userInfo.openId)) {
-    return {
-      errCode: 1000,
-      ok: false,
-      errMsg: '您被限制使用此小程序！'
-    }
-  }
+  // if (!validate(event.userInfo.openId)) {
+  //   return {
+  //     errCode: 1000,
+  //     ok: false,
+  //     errMsg: '您被限制使用此小程序！'
+  //   }
+  // }
   let res;
   if (event.mainPassWord) {
     if (event.newUser) {
