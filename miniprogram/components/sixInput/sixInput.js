@@ -44,7 +44,7 @@ Component({
     //输入框聚焦状态
     get_focus: {
       type: Boolean,
-      value: true,
+      value: false,
     },
     //输入框初始内容
     input_value: {

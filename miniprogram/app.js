@@ -1,4 +1,5 @@
 //app.js
+const version = "1.0.6"
 import { promisifyAll, promisify } from 'miniprogram-api-promise';
 const wxp = {}
 // promisify all wx's api

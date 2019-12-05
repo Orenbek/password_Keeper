@@ -14,13 +14,13 @@
           <view class="weui-cell">
             <view class="weui-cell__hd"><label class="weui-label sm">密码</label></view>
             <view class="weui-cell__bd">
-                <input class="weui-input sm" bindinput="bindInput" value="{{passWord}}" data-field="passWord" auto-focus maxlength="10" type="number" password pattern="[0-9]*" placeholder="......"/>
+                <input class="weui-input sm" bindinput="bindInput" value="{{passWord}}" data-field="passWord" auto-focus maxlength="6" type="number" password pattern="[0-9]*" placeholder="......"/>
             </view>
           </view>
           <view wx:if="{{newUser}}" class="weui-cell">
             <view class="weui-cell__hd"><label class="weui-label sm">再次输入密码</label></view>
             <view class="weui-cell__bd">
-                <input class="weui-input sm" bindinput="bindInput" value="{{passWord2}}" data-field="passWord2" type="number" maxlength="10" password pattern="[0-9]*" placeholder="......"/>
+                <input class="weui-input sm" bindinput="bindInput" value="{{passWord2}}" data-field="passWord2" type="number" maxlength="6" password pattern="[0-9]*" placeholder="......"/>
             </view>
           </view>
         </view>

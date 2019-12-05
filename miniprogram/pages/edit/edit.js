@@ -320,10 +320,12 @@ Page({
       this.data.checkboxItems[id].checked = true;
       PWtype[this.data.checkboxItems[id].value] = true;
     }
+    const minlen = this.sliderMinLen(event.detail.value.length)
     this.setData({
       checkboxItems: this.data.checkboxItems,
       PWtype,
-      sliMinLen: this.sliderMinLen(event.detail.value.length)
+      sliMinLen: minlen,
+      PWLen: minlen > this.data.PWLen ? minlen : this.data.PWLen
     })
   },
 

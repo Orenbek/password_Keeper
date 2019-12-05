@@ -24,7 +24,7 @@
           </mp-cell>
           <mp-cell prop="desc" show-error>
             <view class="weui-cell__bd">
-              <textarea bindinput="formInputChange" data-field="desc" value="{{formData.desc}}" class="weui-input" disabled="{{!ok}}" placeholder-style="{{!ok ? 'color: transparent' : ''}}" placeholder="请输入备注" style="height: 3.3em" />
+              <textarea bindinput="formInputChange" data-field="desc" value="{{formData.desc}}" class="weui-input" disabled="{{!ok}}" placeholder-style="{{!ok ? 'color: transparent' : ''}}" placeholder="请输入备注" style="height: 3.3em {{!ok ? 'color: transparent' : ''}}" />
               <view class="weui-textarea-counter">{{descLength}}/200</view>
             </view>
           </mp-cell>
