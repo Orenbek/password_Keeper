@@ -222,7 +222,7 @@ Page({
           })
           setTimeout(()=>{
             wx.navigateBack();
-          }, 2000)
+          }, 1500)
         } else {
           errors = res.result.errMsg;
         }
